@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='messages.css') }}">
+</head>
+<body class="auth-bg">
+    <div class="topbar">
+        <div class="topbar-content">
+            <div class="profile-dropdown" id="profileDropdown">
+                <img src="{{ url_for('static', filename='default_profile.png') }}" alt="Profile Picture" class="profile-pic" id="profilePic">
+                <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                    <a href="{{ url_for('views.profile') }}">Edit Profile</a>
+                    <a href="{{ url_for('views.logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ url_for('views.user') }}" class="back-arrow">←</a>
+    <div class="messages-container">
+        <div class="messages-sidebar">
+            <div class="sidebar-header-row">
+                <h3>Conversations</h3>
+            </div>
+            <ul class="messages-users-list">
+                {% if messaged_users %}
+                    {% for user in messaged_users %}
+                    <li class="messages-user-item {% if selected_user and selected_user.user_id == user.user_id %}active{% endif %}">
+                        <a href="{{ url_for('views.messages') }}?user_id={{ user.user_id }}">
+                            <img src="{{ url_for('static', filename='default_profile.png') }}" class="sidebar-profile-pic" alt="Profile Picture">
+                            {{ user.fName }} {{ user.lName }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="no-messages">No messages</li>
+                {% endif %}
+            </ul>
+            <a href="{{ url_for('views.messages') }}?add=1" class="add-message-btn floating-add-message">+ Add Message</a>
+        </div>
+        <div class="messages-main">
+            {% if selected_user %}
+            <div class="messages-header">
+                <img src="{{ url_for('static', filename='default_profile.png') }}" class="header-profile-pic" alt="Profile Picture">
+                <h3>Chat with {{ selected_user.fName }} {{ selected_user.lName }}</h3>
+                {% if not is_contact %}
+                    <button class="add-contact-from-chat-btn" id="addContactFromChatBtn" data-user-id="{{ selected_user.user_id }}">+ Add Contact</button>
+                {% endif %}
+            </div>
+            <div class="messages-history">
+                {% for msg in messages_history %}
+                <div class="message-row {% if msg.user_id_sent == session['user_id'] %}sent{% else %}received{% endif %}">
+                    <div class="message-author">{{ msg.fName }} {{ msg.lName }}</div>
+                    <div class="message-content">{{ msg.message_content }}</div>
+                    <div class="message-date">{{ msg.message_date }}</div>
+                </div>
+                {% endfor %}
+            </div>
+            <form class="send-message-form" method="post" action="/send_message">
+                <input type="hidden" name="recipient_id" value="{{ selected_user.user_id }}">
+                <textarea name="message_content" placeholder="Type your message..." required></textarea>
+                <button type="submit" class="auth-btn">Send</button>
+            </form>
+            {% else %}
+            <div class="no-selected-user">Select a conversation to view messages.</div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Add Message Modal -->
+    <div id="addMessageModal" class="modal">
+        <div class="modal-content">
+            <h3>Start a New Conversation</h3>
+            {% if possible_users %}
+            <form id="addMessageForm">
+                <label for="new_message_user_id">Select User</label>
+                <select name="user_id" id="new_message_user_id" required>
+                    <option value="">Select a user</option>
+                    {% for user in possible_users %}
+                    <option value="{{ user.user_id }}">{{ user.fName }} {{ user.lName }} ({{ user.email }})</option>
+                    {% endfor %}
+                </select>
+                <div class="button-row">
+                    <button type="submit" class="auth-btn">Start Chat</button>
+                    <button type="button" class="auth-btn cancel-btn" id="closeAddMessageModal">Cancel</button>
+                </div>
+            </form>
+            {% else %}
+            <div class="no-contacts" style="text-align:center; color:#b31b1b; font-size:1.1rem; margin:24px 0;">No contacts found</div>
+            <div class="button-row">
+                <button type="button" class="auth-btn cancel-btn" id="closeAddMessageModal">Close</button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var profilePic = document.getElementById('profilePic');
+        var dropdown = document.getElementById('profileDropdown');
+        var menu = document.getElementById('profileDropdownMenu');
+        if (profilePic && dropdown && menu) {
+            profilePic.onclick = function(e) {
+                e.stopPropagation();
+                menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+            };
+            document.addEventListener('click', function() {
+                menu.style.display = 'none';
+            });
+        }
+        // Modal logic for Add Message
+        const addMsgBtn = document.querySelector('.add-message-btn');
+        const addMsgModal = document.getElementById('addMessageModal');
+        const closeAddMsgModal = document.getElementById('closeAddMessageModal');
+        if (addMsgBtn && addMsgModal && closeAddMsgModal) {
+            addMsgBtn.onclick = function(e) {
+                e.preventDefault();
+                addMsgModal.classList.add('show');
+            };
+            closeAddMsgModal.onclick = function() { addMsgModal.classList.remove('show'); };
+            window.onclick = function(event) { if (event.target === addMsgModal) addMsgModal.classList.remove('show'); };
+        }
+        // Open modal if ?add=1 in URL
+        if (window.location.search.includes('add=1')) {
+            if (addMsgModal) addMsgModal.classList.add('show');
+        }
+        // Redirect to /messages?user_id=... on form submit
+        const addMessageForm = document.getElementById('addMessageForm');
+        if (addMessageForm) {
+            addMessageForm.onsubmit = function(e) {
+                e.preventDefault();
+                const userId = document.getElementById('new_message_user_id').value;
+                if (userId) {
+                    window.location.href = `/messages?user_id=${userId}`;
+                }
+            };
+        }
+        // AJAX add contact from chat button
+        const addContactChatBtn = document.getElementById('addContactFromChatBtn');
+        if (addContactChatBtn) {
+            addContactChatBtn.onclick = async function() {
+                const userId = addContactChatBtn.getAttribute('data-user-id');
+                const formData = new FormData();
+                formData.append('contact_user_id', userId);
+                const response = await fetch("/add_contact", {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    // Provide feedback or disable button
+                    addContactChatBtn.textContent = 'Contact Added';
+                    addContactChatBtn.disabled = true;
+                    addContactChatBtn.style.backgroundColor = '#ccc';
+                } else {
+                    alert('Failed to add contact.');
+                }
+            };
+        }
+    });
+    </script>
+</body>
+</html> 

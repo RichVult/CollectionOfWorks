@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contacts.css') }}">
+</head>
+<body class="auth-bg">
+    <a href="{{ url_for('views.user') }}" class="back-arrow">←</a>
+    <div class="contacts-container">
+        <div class="contacts-header">
+            <h2>Your Contacts</h2>
+            <button class="add-contact-btn" id="openAddContactModal">+ Add Contact</button>
+        </div>
+        {% if contacts %}
+        <ul class="contacts-list">
+            {% for contact in contacts %}
+            <li class="contact-item">
+                <div class="contact-info">
+                    <span class="contact-name">{{ contact.fName }} {{ contact.lName }}</span>
+                    <span class="contact-email">{{ contact.email }}</span>
+                </div>
+                <div class="contact-actions">
+                    <a href="{{ url_for('views.messages') }}?user_id={{ contact.user_id }}" class="message-contact-btn" data-user-id="{{ contact.user_id }}">Message</a>
+                    <button class="remove-contact-btn" data-user-id="{{ contact.user_id }}">Remove</button>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <div class="no-contacts">No contacts found.</div>
+        {% endif %}
+    </div>
+    <!-- Add Contact Modal -->
+    <div id="addContactModal" class="modal">
+        <div class="modal-content">
+            <h3>Add a Contact</h3>
+            <form id="addContactForm">
+                <label for="contact_user_id">Select User</label>
+                <select name="contact_user_id" id="contact_user_id" required>
+                    <option value="">Select a user</option>
+                    {% for user in possible_contacts %}
+                    <option value="{{ user.user_id }}">{{ user.fName }} {{ user.lName }} ({{ user.email }})</option>
+                    {% endfor %}
+                </select>
+                <div class="button-row">
+                    <button type="submit" class="auth-btn" style="flex:1;">Add</button>
+                    <button type="button" class="auth-btn" style="background:#eee;color:#b31b1b;flex:1;" id="closeAddContactModal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Modal logic
+        const openBtn = document.getElementById('openAddContactModal');
+        const modal = document.getElementById('addContactModal');
+        const closeBtn = document.getElementById('closeAddContactModal');
+        if (openBtn && modal && closeBtn) {
+            openBtn.onclick = function() { modal.style.display = 'flex'; };
+            closeBtn.onclick = function() { modal.style.display = 'none'; };
+            window.onclick = function(event) { if (event.target === modal) modal.style.display = 'none'; };
+        }
+        // Open modal if ?add=1 in URL
+        if (window.location.search.includes('add=1')) {
+            if (modal) modal.style.display = 'flex';
+        }
+        // AJAX add contact
+        const addContactForm = document.getElementById('addContactForm');
+        if (addContactForm) {
+            addContactForm.onsubmit = async function(e) {
+                e.preventDefault();
+                const formData = new FormData(addContactForm);
+                const response = await fetch("/add_contact", {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    } else {
+                        window.location.reload();
+                    }
+                } else {
+                    alert('Failed to add contact.');
+                }
+            };
+        }
+        // AJAX remove contact
+        document.querySelectorAll('.remove-contact-btn').forEach(function(btn) {
+            btn.onclick = async function() {
+                if (!confirm('Remove this contact?')) return;
+                const formData = new FormData();
+                formData.append('contact_user_id', btn.getAttribute('data-user-id'));
+                const response = await fetch('/remove_contact', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to remove contact.');
+                }
+            };
+        });
+    });
+    </script>
+</body>
+</html> 

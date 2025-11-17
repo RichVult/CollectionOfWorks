@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_dashboard.css') }}">
+    <style>
+        .profile-dropdown { position: relative; display: inline-block; }
+        .profile-dropdown-menu {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 48px;
+            background: #fff;
+            min-width: 140px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            border-radius: 8px;
+            z-index: 100;
+        }
+        .profile-dropdown-menu a {
+            display: block;
+            padding: 12px 18px;
+            color: #b31b1b;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+        .profile-dropdown-menu a:hover {
+            background: #f3f4f6;
+        }
+        .profile-dropdown.open .profile-dropdown-menu {
+            display: block;
+        }
+        .profile-pic { cursor: pointer; }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var profile = document.querySelector('.profile-dropdown');
+            if (profile) {
+                profile.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    profile.classList.toggle('open');
+                });
+                document.addEventListener('click', function() {
+                    profile.classList.remove('open');
+                });
+            }
+        });
+    </script>
+</head>
+<body style="background:#f7f8fa;">
+    <div class="sidebar">
+        <div style="display:flex;align-items:center;flex-direction:column;margin-bottom:32px;">
+            <img src="{{ url_for('static', filename='marist.jpeg') }}" alt="Marist Logo" style="width:48px;height:48px;border-radius:12px;margin-bottom:8px;">
+            <span style="font-size:1.25rem;font-weight:700;color:#b31b1b;letter-spacing:1px;">Marist CMS</span>
+        </div>
+        <ul>
+            <li><a href="#" class="active">Dashboard</a></li>
+            <li><a href="#">Contacts</a></li>
+            <li><a href="#">Messages <span style="color:#b31b1b;font-weight:700;">5</span></a></li>
+            <li><a href="#">Admin Panel</a></li>
+        </ul>
+    </div>
+    <div class="topbar">
+        <span style="font-weight:500; margin-right:12px;">Welcome back, {{ user.name }}</span>
+        <div class="profile-dropdown">
+            <img src="{{ user.profile_pic }}" alt="Profile" class="profile-pic">
+            <div class="profile-dropdown-menu">
+                <a href="{{ url_for('views.logout') }}">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1 class="admin-header">Admin Dashboard</h1>
+        <div style="display:flex; gap:32px; align-items: flex-start;">
+            <div style="flex:2; min-width:0;">
+                <div class="user-mgmt">
+                    <div class="user-mgmt-header">
+                        <span style="font-size:1.2rem;font-weight:600;">User Management</span>
+                        <button class="add-user-btn">+ Add New User</button>
+                    </div>
+                    <table class="user-table">
+                        <tr><th>USER</th><th>ROLE</th><th>STATUS</th><th>ACTIONS</th></tr>
+                        <tr>
+                            <td><img src="{{ user.profile_pic }}" class="user-row-pic"> Sarah Wilson<br><span style="color:#888;font-size:0.97rem;">sarah@example.com</span></td>
+                            <td>Admin</td>
+                            <td><span class="status-active">Active</span></td>
+                            <td class="action-btns">
+                                <button class="action-btn" title="Edit">✏️</button>
+                                <button class="action-btn" title="Delete">🗑️</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="system-activity">
+                    <span style="font-size:1.1rem;font-weight:600;">System Activity</span>
+                    <ul class="activity-list" style="margin-top:12px;">
+                        <li><span class="icon info">👤</span> New user registered <span style="color:#888;font-size:0.97rem; margin-left:8px;">2 minutes ago</span></li>
+                        <li><span class="icon success">🔄</span> System update completed <span style="color:#888;font-size:0.97rem; margin-left:8px;">1 hour ago</span></li>
+                        <li><span class="icon error">⚠️</span> Failed login attempt <span style="color:#888;font-size:0.97rem; margin-left:8px;">2 hours ago</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div style="flex:1; min-width:260px;">
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions-grid">
+                        <button class="quick-action-btn">+ Add New User</button>
+                        <button class="quick-action-btn">Manage Roles</button>
+                        <button class="quick-action-btn">System Settings</button>
+                        <button class="quick-action-btn">View Logs</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

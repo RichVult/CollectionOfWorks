@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marist CMS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+<body class="landing-bg">
+    <div class="landing-topbar">
+        <div class="landing-logo" style="margin-right: 40px;"></div>
+        <div class="landing-actions">
+            <a href="{{ url_for('views.login') }}" class="landing-btn">Login</a>
+            <a href="{{ url_for('views.signup') }}" class="landing-btn landing-btn-outline">Sign Up</a>
+        </div>
+    </div>
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>Marist Contact Manager</h1>
+            <p class="hero-subtitle">A modern, secure, and easy way to manage your contacts, messages, and more.</p>
+            <a href="{{ url_for('views.signup') }}" class="hero-cta">Get Started</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!--
+
+    This is the checkout page, similiar to final checkout page in grubhub
+
+    You will be able to see your current order information, expected delivery time, and your information
+
+    You will press Submit to place the order and continue to order status page
+
+    ONLY CAN PROCEED TO STATUS IF LOGGED IN, SAVE ORDER IN SESSION AND REDIRECT TO SIGNUP/LOGIN, THEN REDIRECT BACK TO CHECKOUT UPON LOGIN
+
+    MAYBE redirect to order status if there is a current order placed so only one order at a time
+
+-->
+    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - FreakyFood</title>
+    <link rel="stylesheet" href="/static/checkout.css">
+</head>
+<body>
+    <div class="fixed-header">
+        <a href="/"><img class="logo" src="/static/images/FFLogo.png" alt="Freaky Food Logo"></a>
+        <div id="index">
+            {% if user_id %}
+                <a href="/search"><button type="button">Restaurants</button></a>
+                <a href="/404"><button type="button">Help</button></a>
+                <a href="/404"><button type="button">Deals</button></a>
+                <a href="/account"><button type="button">Home</button></a>
+            {% else %}
+                <a href="/search"><button type="button">Restaurants</button></a>
+                <a href="/404"><button type="button">Deals</button></a>
+                <a href="/404"><button type="button">Help</button></a>
+                <a href="/login"><button type="button">Login</button></a>
+                <a href="/signup"><button type="button">Signup</button></a>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="content-wrapper">
+        <div class="container">
+
+            <!-- Logo and Restaurant Header -->
+            <header class="blue-header">
+                <div class="restaurant-header">
+                    <img src="{{ url_for('static', filename='images/' + curr_restaurant.StoreImage) }}" alt="Store Image" class="restaurant-image"/>
+                    <h1>{{ curr_restaurant.StoreName }}</h1>
+                </div>
+            </header>
+
+            <!-- Order Summary -->
+            <section class="order-summary">
+                <h2>Order #{{ potential_order.OrderID }}</h2>
+                {% if potential_items %}
+                <ul class="order-items">
+                    {% for item in potential_items %}
+                    <li>
+                        <strong>{{ item.OrderItemName }}</strong><br>
+                        <span>Quantity: {{ item.ItemQuantity }}</span><br>
+                        <span>Price: ${{ item.ItemPrice }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No items in your order yet.</p>
+                {% endif %}
+            </section>
+
+            <!-- Order Actions -->
+            <section class="order-actions">
+                <a href="{{ url_for('restaurant', restaurant=curr_restaurant.StoreName) }}"><button class="edit-button">Edit Order</button></a>
+                <hr>
+                <a href='/status'><button>Submit</button></a>
+
+                <form action='/checkout' method="POST" style="display:inline;">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="delete-button" onclick="return confirm('Are you sure you want to delete your order?')">Delete Order</button>
+                </form>
+            </section>
+            
+        </div>
+    </div>
+    
+
+</body>
+
+<footer class="footer">
+    <p style="margin-left: 15px;">&copy; 2024 Freaky Food. All rights reserved.</p>
+    <ul class="footer-links">
+        <li><a href="/404">Privacy Policy</a></li>
+        <li><a href="/404">Terms of Service</a></li>
+        <li><a href="/404">Contact Us</a></li>
+    </ul>
+</footer>
+</html>

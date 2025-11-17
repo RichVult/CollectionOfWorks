@@ -1,0 +1,124 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #95c7fc;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    margin-top: 140px;
+    padding: 20px;
+    margin-bottom: 140px;
+}
+
+/* Container */
+.container {
+    background-color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Blue Header */
+.blue-header {
+    text-align: center;
+    background-color: #ffffff;
+    color: black;
+    padding: 30px 20px;
+    border-radius: 10px 10px 0 0;
+}
+
+.restaurant-header h1 {
+    margin: 10px 0;
+    font-size: 28px;
+}
+
+.restaurant-image {
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Order Wrapper */
+#order-wrapper {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.order-status {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+/* Order Items */
+.order-items h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.order-items ul {
+    list-style: none;
+    padding: 0;
+}
+
+.order-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    font-size: 14px;
+}
+
+.footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.footer-links a {
+    color: #ffccbc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.mark-delivered-btn button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    width: 150px;
+    height: 50px;
+    margin-left: 20px;
+}
+
+.mark-delivered-btn button:hover {
+    background-color: #007bff;
+}

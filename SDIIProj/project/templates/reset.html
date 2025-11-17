@@ -1,0 +1,58 @@
+<!--
+
+    This is the reset password page
+
+    This page should only be accessable when logged in.
+
+    This page should be accessable through different means for each user type.
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reset Password - Freaky Food</title>
+    <link rel="stylesheet" href="/static/reset.css">
+</head>
+
+<body>
+
+    <header>
+        <a href="/home" style="position: absolute; top: 10px; left: 10px;">
+            <img src="../static/images/FFLogo.png" alt="Logo" height="100px" width="100px">
+        </a>
+        <h1>Reset your Password</h1>
+    </header>
+
+    <div class="form-container">
+        <div class="form-box">
+            <h2>Reset Your Password</h2>
+            <form method="POST">
+                <label for="CurrentPassword">Current Password:</label><br>
+                <input type="password" id="CurrentPassword" name="CurrentPassword" required><br><br>
+                
+                <label for="NewPassword">New Password:</label><br>
+                <input type="password" id="NewPassword" name="NewPassword" required><br><br>
+
+                <input type="submit" value="Reset Password">
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <a href="/home">
+            <button type="button" id="home">
+                Back to Home
+            </button>
+        </a>
+    </footer>
+    <!-- Display alert if there is an error -->
+    {% if error %}
+    <script>
+        alert("{{ error }}");
+    </script>
+    {% endif %}
+</body>
+</html>

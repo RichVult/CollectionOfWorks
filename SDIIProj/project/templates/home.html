@@ -1,0 +1,62 @@
+<!--
+
+    This is the logged in home page for users.
+
+    This page should only be accesable when logged in as a USER
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Freaky Food</title>
+        <link rel="stylesheet" href="/static/home.css">
+    </head>
+
+    <body>
+        <div class="fixed-header">
+            <img class="logo" src="/static/images/FFLogo.png" alt="Freaky Food Logo">
+            <div id="index">
+                <a href="/search"><button type="button">Restaurants</button></a>
+                <a href="/404"><button type="button">Deals</button></a>
+                <a href="/404"><button type="button">Help</button></a>
+                <a href="/account"><button type="button">My Account</button></a>
+            </div>
+        </div>
+
+    <section class="hero">
+        <h1>Welcome to Freaky Food</h1>
+        <p>Your favorite meals, delivered fast and fresh!</p>
+        
+        <!-- Redirect to Search -->
+        <div class="search-bar">
+            <form action="/search" method="get">
+                <input type="text" name="query" placeholder="What are you craving?" />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="featured-restaurants">
+        <h2>Popular Restaurants</h2>
+        <div class="restaurant-logos">
+            <a href="/404"><img src="/static/images/BK_Logo.png" alt="Burger King"></a>
+            <a href="/404"><img src="/static/images/WingStop_logo.png" style="width: 220px;" alt="Wing Stop"></a>
+            <a href="/404"><img src="/static/images/Chipotle_logo.png" alt="Chipotle"></a>
+            <a href="/404"><img src="/static/images/OliveGarden_Logo.png" alt="Olive Garden"></a>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p style="margin-left: 15px;">&copy; 2024 Freaky Food. All rights reserved.</p>
+        <ul class="footer-links">
+            <li><a href="/404">Privacy Policy</a></li>
+            <li><a href="/404">Terms of Service</a></li>
+            <li><a href="/404">Contact Us</a></li>
+        </ul>
+    </footer>
+</body>
+</html>
+

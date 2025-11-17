@@ -1,0 +1,85 @@
+<!--
+
+    This is the driver order status page, this is where a driver will see his current accepted order and its information
+
+    Should remain pretty simple and only serve as the "hold" and "completion" checker for the order
+
+    Upon accepting an order, it will then proceed to the store owner for completion
+
+    When this is done we will be able to see that reflected here, from there the driver will deliver the food and mark completion
+
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="refresh" content="10"> <!-- Refresh every 10 seconds -->
+        <title>Order Status - FreakyFood</title>
+        <link rel="stylesheet" href="../static/status.css">
+    </head>
+    <body>
+        <!-- Content Wrapper -->
+        <div class="content-wrapper">
+            <div class="container">
+                <!-- Restaurant Header -->
+                <header class="blue-header">
+                    <div class="restaurant-header">
+                        <a href='/'><img class="logo" src="/static/images/FFLogo.png" alt="Freaky Food Logo"></a>
+                        <h1>{{ curr_restaurant.StoreName }}</h1>
+                        <img src="{{ url_for('static', filename='images/' + curr_restaurant.StoreImage) }}" 
+                            alt="{{ curr_restaurant.StoreName }} Image" class="restaurant-image" />
+                    </div>
+                </header>
+
+                <!-- Order Information -->
+                <div id="order-wrapper">
+                    <h1>ORDER #{{ current_order.OrderID }}</h1>
+                    <hr>
+                    <h2>ORDER STATUS: <strong>{{ current_order.OrderStatus }}</strong></h2>
+
+                    {% if current_order.OrderStatus == 'Ready' %}
+                    <form action="/driverStatus" method="POST">
+                        <input type="hidden" name="action" value="Pickup">
+                        <input type="hidden" name="order_id" value="{{ current_order.OrderID }}">
+                        <button type="submit" class="mark-delivered-btn">Mark Pickup</button>
+                    </form>
+                    {% endif %}
+
+                    {% if current_order.OrderStatus == 'Pickup' %}
+                    <form action="/driverStatus" method="POST">
+                        <input type="hidden" name="action" value="Deliver">
+                        <input type="hidden" name="order_id" value="{{ current_order.OrderID }}">
+                        <button type="submit" class="mark-delivered-btn">Mark Delivered</button>
+                    </form>
+                    {% endif %}
+
+                    <!-- Order Items -->
+                    <section class="order-items">
+                        <h2>Order Items:</h2>
+                        <ul>
+                            {% for item in order_items %}
+                            <li class="order-item">
+                                <p><strong>{{ item.OrderItemName }}</strong></p>
+                                <p>Quantity: {{ item.ItemQuantity }}</p>
+                                <p>Price: ${{ item.ItemPrice }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Freaky Food. All rights reserved.</p>
+            <ul class="footer-links">
+                <li><a href="/404">Privacy Policy</a></li>
+                <li><a href="/404">Terms of Service</a></li>
+                <li><a href="/404">Contact Us</a></li>
+            </ul>
+        </footer>
+    </body>
+</html>

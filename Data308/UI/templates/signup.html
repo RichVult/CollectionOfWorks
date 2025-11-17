@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+</head>
+<body class="auth-bg">
+    <div class="auth-container">
+        <div class="auth-icon"><img src="{{ url_for('static', filename='marist.jpeg') }}" alt="Marist Shield"></div>
+        <h2>Create Account</h2>
+        <p class="subtitle">Join Marist Contact Manager today</p>
+        <form method="post" class="auth-form">
+            <div class="row">
+                <div class="col">
+                    <label>First Name</label>
+                    <div class="input-icon">
+                        <input name="fName" type="text" placeholder="First name" required>
+                    </div>
+                </div>
+                <div class="col">
+                    <label>Last Name</label>
+                    <div class="input-icon">
+                        <input name="lName" type="text" placeholder="Last name" required>
+                    </div>
+                </div>
+            </div>
+            <label>Email address</label>
+            <div class="input-icon">
+                <span class="icon">@</span>
+                <input name="email" type="email" placeholder="Enter your email" required>
+            </div>
+            <label>Password</label>
+            <div class="input-icon">
+                <span class="icon">&#128274;</span>
+                <input name="password" type="password" placeholder="Create a password" required>
+            </div>
+            <label>Confirm Password</label>
+            <div class="input-icon">
+                <span class="icon">&#128274;</span>
+                <input name="confirm_password" type="password" placeholder="Confirm your password" required>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>Gender</label>
+                    <div class="input-icon">
+                        <select name="gender" required class="styled-select">
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <label>Phone Number</label>
+                    <div class="input-icon">
+                        <input name="phone" type="text" placeholder="Phone Number" required>
+                    </div>
+                </div>
+            </div>
+            <div class="checkbox-row">
+                <input type="checkbox" required> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="error-list">
+                {% for category, message in messages %}
+                  <li class="error-message">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+            <button type="submit" class="auth-btn">Create Account</button>
+        </form>
+        <div class="auth-footer">
+            Already have an account? <a href="{{ url_for('views.login') }}">Sign in</a>
+        </div>
+        <div class="divider"><span>Or continue with</span></div>
+        <div class="social-row">
+            <button class="social-btn google">G Google</button>
+            <button class="social-btn microsoft">Microsoft</button>
+        </div>
+    </div>
+</body>
+</html> 

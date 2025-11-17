@@ -1,0 +1,202 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* Outer container with blue side margins */
+.content-wrapper {
+    background-color: #95c7fc;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+/* Inner content container */
+.container {
+    background-color: #fff;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Blue header section */
+.blue-header {
+    background-color: #ffffff;
+    color: black;
+    padding: 20px;
+    text-align: center;
+    border-radius: 8px 8px 0 0;
+    margin-top: 100px;
+}
+
+.logo {
+    display: block;
+    margin: 0 auto 15px;
+    width: 120px;
+}
+
+.restaurant-header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: black;
+}
+
+.restaurant-image {
+    display: block;
+    margin: 20px auto;
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* Order Summary */
+.order-summary {
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.order-summary h2 {
+    color: #ff5a5f;
+}
+
+.order-items {
+    list-style: none;
+    padding: 0;
+}
+
+.order-items li {
+    padding: 10px;
+    border-bottom: 1px solid #eaeaea;
+    margin-bottom: 5px;
+}
+
+/* Buttons */
+.container button {
+    width: 120px;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #27bc45;
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.container button:hover {
+    background-color: #e04848;
+}
+
+.container .edit-button {
+    background-color: #18a8d4;
+}
+
+.container .delete-button {
+    background-color: #f44336;
+    margin-top: 15px;
+}
+
+/* Centering and spacing for action buttons */
+.order-actions {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 70px;
+}
+
+hr {
+    margin-top: 20px;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
+
+
+footer {
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: auto;
+    border: none;
+    box-shadow: none;
+}
+
+.footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    background-color: transparent;
+    padding: 0;
+}
+
+.footer-links a {
+    color: #ffccbc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: #fff;
+}
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #007bff;
+    height: 70px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    font-size: 1.5em;
+    z-index: 1000;
+}
+
+.logo {
+    height: 100px;
+    width: 100px;
+}
+
+#index {
+    display: flex;
+    flex-direction: row;
+    gap: .7rem;
+    margin-right: 20px;
+}
+
+#index button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#index button:hover {
+    background-color: #0056b3;
+}

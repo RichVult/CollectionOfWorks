@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+</head>
+<body class="auth-bg">
+    <div class="auth-container" style="max-width:600px;">
+        <a href="{{ url_for('views.user') }}" class="back-arrow">←</a>
+        <div class="profile-header">
+            <div class="profile-pic">
+                <img src="{{ url_for('static', filename='default_profile.png') }}" alt="Profile Picture">
+            </div>
+            <h2>Edit Profile</h2>
+        </div>
+        <form method="POST" action="{{ url_for('views.profile') }}" class="auth-form" onsubmit="console.log('Form submitted'); return true;">
+            <label>Email</label>
+            <input name="email" type="email" value="{{ user.email or '' }}" required>
+
+            <label>New Password</label>
+            <input name="password" type="password" placeholder="Leave blank to keep current">
+
+            <label>Confirm New Password</label>
+            <input name="confirm_password" type="password" placeholder="Leave blank or confirm password">
+
+            <label>Phone Number</label>
+            <input name="phone_number" type="text" value="{{ user.phone_number or '' }}">
+
+            <label>Home Phone Number</label>
+            <input name="home_phone_number" type="text" value="{{ user.home_phone_number or '' }}">
+
+            <label>Gender</label>
+            <select name="gender">
+                <option value="">Select Gender</option>
+                <option value="Male" {% if user.gender == 'Male' %}selected{% endif %}>Male</option>
+                <option value="Female" {% if user.gender == 'Female' %}selected{% endif %}>Female</option>
+                <option value="Other" {% if user.gender == 'Other' %}selected{% endif %}>Other</option>
+            </select>
+
+            <label>Fax Number</label>
+            <input name="fax_number" type="text" value="{{ user.fax_number or '' }}">
+
+            <label>Birthdate</label>
+            <input name="birth_date" type="date" value="{{ user.birth_date or '' }}">
+
+            <div>
+                <label>Company</label>
+                <select name="company_id">
+                    <option value="">Select Company</option>
+                    {% for company in companies %}
+                    <option value="{{ company.company_id }}" {% if user.company_id == company.company_id %}selected{% endif %}>{{ company.company_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <label>School</label>
+            <select name="school_id">
+                <option value="">Select School</option>
+                {% for school in schools %}
+                <option value="{{ school.school_id }}" {% if user.school_id == school.school_id %}selected{% endif %}>{{ school.school_name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Partner</label>
+            <select name="partner_id" id="partner-select">
+                <option value="">Select Partner</option>
+                {% for partner in partners %}
+                <option value="{{ partner.partner_id }}" {% if user.partner_id == partner.partner_id %}selected{% endif %}>{{ partner.partner_name }}</option>
+                {% endfor %}
+            </select>
+            <a href="#" class="add-link" id="add-partner-link">+ Add New Partner</a>
+
+            <button type="submit" class="btn btn-primary save-changes-btn">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- Partner Modal (outside the main form!) -->
+    <div id="partner-modal" class="modal">
+        <div class="modal-content">
+            <h3>Add New Partner</h3>
+            <form id="partner-form">
+                <div>
+                    <label for="partner_name">Name</label>
+                    <input id="partner_name" name="partner_name" type="text" required>
+                </div>
+                <div>
+                    <label for="birth_year">Birth Year</label>
+                    <input id="birth_year" name="birth_year" type="number" min="1900" max="2100" required maxlength="4" pattern="\d{4}" oninput="if(this.value.length>4)this.value=this.value.slice(0,4);">
+                </div>
+                <div>
+                    <label for="birth_month">Birth Month</label>
+                    <input id="birth_month" name="birth_month" type="number" min="1" max="12" required maxlength="2" pattern="\d{1,2}" oninput="if(this.value.length>2)this.value=this.value.slice(0,2);">
+                </div>
+                <div>
+                    <label for="partner_gender">Gender</label>
+                    <select id="partner_gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="button-row">
+                    <button type="submit" class="auth-btn" style="flex:1;">Add Partner</button>
+                    <button type="button" class="auth-btn" style="background:#eee;color:#b31b1b;flex:1;" id="close-partner-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Modal logic
+        const addPartnerLink = document.getElementById('add-partner-link');
+        const partnerModal = document.getElementById('partner-modal');
+        const closePartnerModal = document.getElementById('close-partner-modal');
+        if (addPartnerLink && partnerModal && closePartnerModal) {
+            addPartnerLink.onclick = function(e) { e.preventDefault(); partnerModal.style.display = 'flex'; };
+            closePartnerModal.onclick = function() { partnerModal.style.display = 'none'; };
+            window.onclick = function(event) { if (event.target === partnerModal) partnerModal.style.display = 'none'; };
+        }
+        // AJAX form submit
+        const partnerForm = document.getElementById('partner-form');
+        if (partnerForm) {
+            partnerForm.onsubmit = async function(e) {
+                e.preventDefault();
+                const formData = new FormData(partnerForm);
+                const response = await fetch("{{ url_for('views.add_partner') }}", {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    // Add new partner to dropdown and select it
+                    const select = document.getElementById('partner-select');
+                    const option = document.createElement('option');
+                    option.value = data.partner_id;
+                    option.textContent = data.partner_name;
+                    option.selected = true;
+                    select.innerHTML = '';
+                    select.appendChild(option);
+                    partnerModal.style.display = 'none';
+                } else {
+                    alert('Failed to add partner.');
+                }
+            };
+        }
+    });
+    </script>
+</body>
+</html> 

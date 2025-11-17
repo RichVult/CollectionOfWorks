@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<body class="auth-bg">
+    <div class="auth-container">
+        <div class="auth-icon"><img src="{{ url_for('static', filename='marist.jpeg') }}" alt="Marist Shield"></div>
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to your Marist Contact Manager account</p>
+        <form method="post" class="auth-form">
+            <label>Email</label>
+            <div class="input-icon">
+                <span class="icon">@</span>
+                <input name="email" type="email" placeholder="Enter your email" required>
+            </div>
+            <label>Password</label>
+            <div class="input-icon">
+                <span class="icon">&#128274;</span>
+                <input name="password" type="password" placeholder="Enter your password" required>
+            </div>
+            <div class="auth-options">
+                <label><input type="checkbox" name="remember"> Remember me</label>
+                <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+              {% if messages %}
+                <ul class="error-list">
+                {% for category, message in messages %}
+                  <li class="error-message">{{ message }}</li>
+                {% endfor %}
+                </ul>
+              {% endif %}
+            {% endwith %}
+            <button type="submit" class="auth-btn">Sign In</button>
+        </form>
+        <div class="auth-footer">
+            Don't have an account? <a href="{{ url_for('views.signup') }}">Sign up</a>
+        </div>
+        <footer class="auth-copyright">
+            &copy; 2025 Marist Contact Manager. All rights reserved.
+        </footer>
+    </div>
+</body>
+</html> 
