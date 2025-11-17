@@ -9,4 +9,6 @@ IntroDataScience - This was an intro level data class, in the folder you will fi
 
 DatabaseManagement - This was a higher level class focused on interacting more directly with databases and was done mostly in SQL. I was one in a group of six for this, so a smaller portion of the code is actually mine. This class gave me experience with MySQL and working in larger groups.
 
-IntroPython - 
+IntroPython - This class was a very basic introduction into python, this folder contains all of the labs we worked on, this is was a personal repo so all work is my own.
+
+SDII - This was a higher level software development class
