@@ -11,4 +11,6 @@ DatabaseManagement - This was a higher level class focused on interacting more d
 
 IntroPython - This class was a very basic introduction into python, this folder contains all of the labs we worked on, this is was a personal repo so all work is my own.
 
-SDII - This was a higher level software development class
+SDII - This was a higher level software development class, I was one in a group of seven so only a proportion of the work is my own. For this project we were provided a client who wanted a piece of software, all groups got something different, our client wanted a food delivery app. My group worked together to delegate the work between us and provide a finished product in the time allotted to us. We worked with a database though Postgress and hosted our webpage locally. SQL, java, CSS, and HTML were used. 
+
+Algorithms - This a 400 level class I am currently taking this semester, Fall of 2025. It focuses on 
